@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neural Network Visualizer</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/static/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Neural Network Visualizer</h1>
+    </div>
+
+    <!-- Main Controls -->
+    <div class="control-panel">
+        <!-- Control buttons -->
+        <div class="control-bar">
+            <div class="control-group">
+                <button class="control-btn play">
+                    <i class="material-icons">play_arrow</i>
+                </button>
+                <button class="control-btn">
+                    <i class="material-icons">skip_next</i>
+                </button>
+                <button class="control-btn">
+                    <i class="material-icons">replay</i>
+                </button>
+                <button class="control-btn add-layer">
+                    <i class="material-icons">add</i>
+                    Add Layer
+                </button>
+            </div>
+
+            <!-- Network parameters in same line -->
+            <div class="network-params">
+                <div class="param-group">
+                    <label>Learning rate:</label>
+                    <select class="param-select">
+                        <option value="0.00001">0.00001</option>
+                        <option value="0.0001">0.0001</option>
+                        <option value="0.001">0.001</option>
+                        <option value="0.003">0.003</option>
+                        <option value="0.01">0.01</option>
+                        <option value="0.03">0.03</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.3">0.3</option>
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Activation:</label>
+                    <select class="param-select">
+                        <option value="relu">ReLU</option>
+                        <option value="tanh">Tanh</option>
+                        <option value="sigmoid">Sigmoid</option>
+                        <option value="linear">Linear</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Regularization:</label>
+                    <select class="param-select">
+                        <option value="none">None</option>
+                        <option value="l1">L1</option>
+                        <option value="l2">L2</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Regularization rate:</label>
+                    <select class="param-select">
+                        <option value="0">0</option>
+                        <option value="0.001">0.001</option>
+                        <option value="0.003">0.003</option>
+                        <option value="0.01">0.01</option>
+                        <option value="0.03">0.03</option>
+                        <option value="0.1">0.1</option>
+                        <option value="0.3">0.3</option>
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Problem type:</label>
+                    <select class="param-select">
+                        <option value="classification">Classification</option>
+                        <option value="regression">Regression</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Move training controls to left side -->
+        <div class="controls-section">
+            <div class="training-controls">
+                <div class="slider-group">
+                    <label>
+                        Training Data Ratio
+                        <span class="value">80%</span>
+                    </label>
+                    <input type="range" class="slider" min="10" max="90" step="10" value="80">
+                </div>
+
+                <div class="slider-group">
+                    <label>
+                        Noise Level
+                        <span class="value">0</span>
+                    </label>
+                    <input type="range" class="slider" min="0" max="50" step="5" value="0">
+                </div>
+
+                <div class="slider-group">
+                    <label>
+                        Batch Size
+                        <span class="value">10</span>
+                    </label>
+                    <input type="range" class="slider" min="1" max="30" step="1" value="10">
+                </div>
+
+                <button class="regenerate-btn">Regenerate</button>
+            </div>
+
+            <!-- Network visualization to the right of training controls -->
+            <div class="network-visualization">
+                <canvas id="networkCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Output section -->
+    <div class="output-container">
+        <div class="output-header">
+            <h4>Output</h4>
+            <div class="loss-values">
+                <span>Test loss: <span id="test-loss">0.155</span></span>
+                <span>Training loss: <span id="training-loss">0.180</span></span>
+            </div>
+        </div>
+        
+        <div class="output-graph-container">
+            <div class="axis-labels y-axis">
+                <span>6</span><span>4</span><span>2</span><span>0</span>
+                <span>-2</span><span>-4</span><span>-6</span>
+            </div>
+            <canvas id="outputGraph"></canvas>
+            <div class="axis-labels x-axis">
+                <span>-6</span><span>-4</span><span>-2</span><span>0</span>
+                <span>2</span><span>4</span><span>6</span>
+            </div>
+        </div>
+        
+        <div class="weight-visualization">
+            <div class="gradient-info">
+                <span class="info-text">Colors shows data, neuron and weight values.</span>
+                <div class="gradient-scale">
+                    <svg width="150" height="30" id="colormap">
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="100%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--neuron-input)" stop-opacity="1"></stop>
+                                <stop offset="50%" stop-color="#e8eaeb" stop-opacity="1"></stop>
+                                <stop offset="100%" stop-color="var(--neuron-hidden)" stop-opacity="1"></stop>
+                            </linearGradient>
+                        </defs>
+                        <rect width="144" height="10" style="fill: url('#gradient');"></rect>
+                    </svg>
+                    <div class="weight-scale">
+                        <div class="weight-dots">
+                            <span class="dot" style="color: var(--neuron-input)">●</span>
+                            <span class="dot" style="color: var(--neuron-hidden)">●</span>
+                            <span class="dot" style="color: var(--neuron-output)">●</span>
+                        </div>
+                        <div class="weight-labels">
+                            <span>-1</span>
+                            <span>0</span>
+                            <span>1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="graph-controls">
+            <label><input type="checkbox" id="showTestData" checked> Show test data</label>
+            <label><input type="checkbox" id="discretizeOutput" checked> Discretize output</label>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
