@@ -5,8 +5,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="/static/css/styles.css" rel="stylesheet">
 </head>
-<script src="/static/js/script.js"></script>  
-<body>
+<body> 
     <!-- Header -->
     <div class="header">
         <h1>Neural Network Visualizer</h1>
@@ -32,7 +31,7 @@
                 </button>
             </div>
 
-            <!-- Network parameters in same line -->
+            <!-- Network parameters -->
             <div class="network-params">
                 <div class="param-group">
                     <label>Learning rate:</label>
@@ -92,7 +91,7 @@
             </div>
         </div>
 
-        <!-- Move training controls to left side -->
+        <!-- Training controls -->
         <div class="controls-section">
             <div class="training-controls">
                 <div class="slider-group">
@@ -122,7 +121,7 @@
                 <button class="regenerate-btn">Regenerate</button>
             </div>
 
-            <!-- Network visualization to the right of training controls -->
+            <!-- Network visualization -->
             <div class="network-visualization">
                 <canvas id="networkCanvas"></canvas>
             </div>
@@ -153,7 +152,7 @@
         
         <div class="weight-visualization">
             <div class="gradient-info">
-                <span class="info-text">Colors shows data, neuron and weight values.</span>
+                <span class="info-text">Colors show data, neuron, and weight values.</span>
                 <div class="gradient-scale">
                     <svg width="150" height="30" id="colormap">
                         <defs>
@@ -187,6 +186,8 @@
         </div>
     </div>
 
+    <!-- JavaScript file included at the END of body -->
     <script src="/static/js/script.js"></script>
 </body>
 </html>
+
